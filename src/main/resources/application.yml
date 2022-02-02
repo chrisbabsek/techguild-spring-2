@@ -7,3 +7,14 @@ spring:
     hibernate:
       ddl-auto: create
     open-in-view: false
+  cache:
+    type: simple
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-components: always
+      show-details: always
