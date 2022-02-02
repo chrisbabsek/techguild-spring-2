@@ -1,8 +1,14 @@
 package de.babsek.techguildspring2.users
 
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.annotation.Version
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import java.time.LocalDateTime
 import javax.persistence.*
 
 @Table(name = "users")
+@EntityListeners(AuditingEntityListener::class)
 @Entity
 data class UserEntity(
     @Id
@@ -23,5 +29,17 @@ data class UserEntity(
     val password: String,
 
     @Column(name = "age")
-    val age: Int? = null
+    val age: Int? = null,
+
+    @CreatedDate
+    @Column(name = "created_date", nullable = false, updatable = false)
+    var createdDate: LocalDateTime? = null,
+
+    @LastModifiedDate
+    @Column(name = "last_modified_date", nullable = false)
+    var lastModifiedDate: LocalDateTime? = null,
+
+    @Version
+    @Column(name = "version", nullable = false)
+    var version: Long = 0
 )

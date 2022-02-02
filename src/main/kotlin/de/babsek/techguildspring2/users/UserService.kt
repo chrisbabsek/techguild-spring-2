@@ -27,6 +27,14 @@ class UserService(
         return repository.findByUsername(username)?.toDomainObject() ?: error("No user $username found!")
     }
 
+    fun updateUserByUsername(username: String, updateBlock: User.() -> User) {
+        repository
+            .findByUsername(username)
+            ?.let { it.patch(it.toDomainObject().updateBlock()) }
+            ?.let(repository::save)
+            ?: error("No user $username found!")
+    }
+
     @Transactional
     @CacheEvict
     fun deleteByUsername(username: String) {
@@ -37,7 +45,7 @@ class UserService(
     fun createUser(user: User): Long {
         val actualUsername = "${user.firstName}.${user.lastName}".lowercase()
         return when (repository.existsByUsername(actualUsername)) {
-            true -> error("Another user '${actualUsername}' already existing.")
+            true -> error("Another user '$actualUsername' already existing.")
             false -> repository.save(user.copy(username = actualUsername).toEntity()).id ?: error("No ID created.")
         }
     }
@@ -49,6 +57,14 @@ fun UserEntity.toDomainObject() = User(
     lastName = lastName,
     password = password,
     age = age?.toUInt()
+)
+
+fun UserEntity.patch(user: User) = copy(
+    username = user.username,
+    firstName = user.firstName,
+    lastName = user.lastName,
+    password = user.password,
+    age = user.age?.toInt()
 )
 
 fun User.toEntity() = UserEntity(

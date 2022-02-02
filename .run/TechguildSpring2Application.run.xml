@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="TechguildSpring2Application" type="SpringBootApplicationConfigurationType"
+                   factoryName="Spring Boot">
+        <module name="techguild-spring-2.main"/>
+        <option name="SPRING_BOOT_MAIN_CLASS" value="de.babsek.techguildspring2.TechguildSpring2Application"/>
+        <option name="ALTERNATIVE_JRE_PATH"/>
+        <option name="UPDATE_ACTION_UPDATE_POLICY" value="UpdateClassesAndTriggerFile"/>
+        <method v="2">
+            <option name="Make" enabled="true"/>
+            <option name="com.soywiz.korge.intellij.UpdateResourceBeforeRunTask" enabled="false"/>
+        </method>
+    </configuration>
+</component>

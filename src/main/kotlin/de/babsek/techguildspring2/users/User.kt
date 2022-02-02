@@ -6,4 +6,6 @@ data class User(
     val lastName: String,
     val password: String,
     val age: UInt? = null
-)
+) {
+    fun getAgeString() = age?.toString() ?: "-"
+}

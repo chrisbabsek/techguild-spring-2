@@ -10,7 +10,7 @@ plugins {
 
 group = "de.babsek"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_16
 
 configurations {
     compileOnly {
@@ -37,7 +37,7 @@ dependencies {
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-//    implementation("org.springframework.data:spring-data-rest-hal-explorer")
+    implementation("org.springframework.data:spring-data-rest-hal-explorer")
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")

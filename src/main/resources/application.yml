@@ -9,6 +9,13 @@ spring:
     open-in-view: false
   cache:
     type: simple
+  thymeleaf:
+    cache: false
+    prefix: file:src/main/resources/templates/
+
+  data:
+    rest:
+      base-path: api
 management:
   endpoints:
     web:
@@ -18,3 +25,7 @@ management:
     health:
       show-components: always
       show-details: always
+
+tech-guild:
+  config:
+    find-user-delay: 1s

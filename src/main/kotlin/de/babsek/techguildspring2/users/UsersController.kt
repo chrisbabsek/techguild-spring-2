@@ -21,7 +21,7 @@ class UsersController(
     }
 
     @PostMapping
-    fun createUser(@RequestBody creation: UserCreationDto): ResponseEntity<Unit> {
+    fun createUser(@RequestBody creation: UserDto): ResponseEntity<Unit> {
         return try {
             val id = userService.createUser(
                 User(
@@ -40,8 +40,24 @@ class UsersController(
         }
     }
 
-    data class UserCreationDto(
-        val firstName: String, val lastName: String, val password: String, val age: Int?
+    @PutMapping("{username}")
+    fun updateUser(@PathVariable username: String, @RequestBody user: UserDto) {
+        userService
+            .updateUserByUsername(username) {
+                copy(
+                    firstName = user.firstName,
+                    lastName = user.lastName,
+                    password = user.password,
+                    age = user.password.toUInt()
+                )
+            }
+    }
+
+    data class UserDto(
+        val firstName: String,
+        val lastName: String,
+        val password: String,
+        val age: Int?
     )
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
