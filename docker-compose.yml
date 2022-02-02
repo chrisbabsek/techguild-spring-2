@@ -1,0 +1,12 @@
+version: '3'
+services:
+  postgres:
+    restart: "no"
+    container_name: techguild-postgres
+    image: "postgres:latest"
+    ports:
+      - "7777:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_DB=database
+      - POSTGRES_PASSWORD=secret
