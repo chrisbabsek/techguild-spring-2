@@ -1,10 +1,14 @@
 package de.babsek.techguildspring2.users
 
+import org.hibernate.validator.constraints.Length
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import java.net.URI
+import javax.validation.constraints.NotBlank
 
+@Validated
 @RequestMapping("users")
 @RestController
 class UsersController(
@@ -16,7 +20,7 @@ class UsersController(
     }
 
     @GetMapping(params = ["username"])
-    fun findByUsername(@RequestParam username: String): User {
+    fun findByUsername(@RequestParam @NotBlank @Length(min = 2) username: String): User {
         return userService.findByUsername(username)
     }
 

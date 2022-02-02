@@ -1,5 +1,6 @@
 package de.babsek.techguildspring2.users
 
+import de.babsek.techguildspring2.configuration.CustomConfiguration
 import org.springframework.cache.annotation.CacheConfig
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
@@ -9,7 +10,8 @@ import org.springframework.transaction.annotation.Transactional
 @CacheConfig(cacheNames = ["users"])
 @Service
 class UserService(
-    private val repository: UserRepository
+    private val repository: UserRepository,
+    private val config: CustomConfiguration
 ) {
     fun findAll(): List<User> {
         return repository
@@ -23,8 +25,8 @@ class UserService(
 
     @Cacheable
     fun findByUsername(username: String): User {
-        Thread.sleep(2000)
-        return repository.findByUsername(username)?.toDomainObject() ?: error("No user $username found!")
+        Thread.sleep(config.findUserDelay.toMillis())
+        return repository.findByUsername(username)?.toDomainObject() ?: throw NoSuchUserException(username)
     }
 
     fun updateUserByUsername(username: String, updateBlock: User.() -> User) {
@@ -32,13 +34,15 @@ class UserService(
             .findByUsername(username)
             ?.let { it.patch(it.toDomainObject().updateBlock()) }
             ?.let(repository::save)
-            ?: error("No user $username found!")
+            ?: throw NoSuchUserException(username)
     }
 
     @Transactional
     @CacheEvict
     fun deleteByUsername(username: String) {
-        require(repository.existsByUsername(username)) { "No such user: $username" }
+        if (!repository.existsByUsername(username)) {
+            throw NoSuchUserException(username)
+        }
         repository.deleteByUsername(username)
     }
 
